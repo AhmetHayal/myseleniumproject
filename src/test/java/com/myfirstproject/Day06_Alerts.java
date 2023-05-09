@@ -19,7 +19,6 @@ public class Day06_Alerts extends TestBase {
     and sendKeys to type on the alert
      */
 
-
     @Test
     public void acceptAlert(){
 /*
@@ -28,6 +27,11 @@ verify the text “I am a JS Alert” ,
 click OK ,
 and Verify “You successfully clicked an alert”
  */
+        driver.get("https://testcenter.techproeducation.com/index.php?page=javascript-alerts");
+        driver.findElement(By.xpath("//button[@onclick='jsAlert()']")).click();
+        Assert.assertEquals("I am a JS Alert", driver.switchTo().alert().getText());
+        driver.switchTo().alert().accept();
+        Assert.assertEquals("You successfully clicked an alert", driver.findElement(By.id("result")).getText());
     }
     @Test
     public void dismissAlert(){
@@ -37,6 +41,11 @@ verify text "I am a JS Confirm”,
 click cancel,
 and Verify “You clicked: Cancel”
  */
+        driver.get("https://testcenter.techproeducation.com/index.php?page=javascript-alerts");
+        driver.findElement(By.xpath("//button[.='Click for JS Confirm']")).click();
+        Assert.assertEquals("I am a JS Confirm", driver.switchTo().alert().getText());
+        driver.switchTo().alert().dismiss();
+        Assert.assertEquals("You clicked: Cancel", driver.findElement(By.id("result")).getText());
     }
     @Test
     public void sendKeysAlert(){
@@ -53,13 +62,14 @@ Collapse
         driver.findElement(By.xpath("//button[@onclick='jsPrompt()']")).click();
 //        verify text “I am a JS prompt”
         String actualAlertText = driver.switchTo().alert().getText();
-        Assert.assertEquals("I am a JS prompt",actualAlertText);
+        Assert.assertEquals("I am a JS prompt", actualAlertText);
 //       type “Hello World”
         driver.switchTo().alert().sendKeys("Hello World");
 //        click OK
         driver.switchTo().alert().accept();
 //        and Verify “You entered: Hello World”
         String actualResultText = driver.findElement(By.id("result")).getText();
-        Assert.assertEquals("You entered: Hello World",actualResultText);
+        Assert.assertEquals("You entered: Hello World", actualResultText);
+
     }
 }
