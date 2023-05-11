@@ -43,12 +43,13 @@ public class Day06_Iframe extends TestBase {
         js.executeScript("arguments[0].click();", element);
 
 
-//        Assert if h3 element's text is equal to "iframe"
-//       STILL INSIDE THE FRAME. DRIVER MUST SWITCH BACK TO PARENT FRAME OR DEFAULT CONTENT BECAUSE THE ELEMENT IS NOT IN THE FRAME
-//        driver.switchTo().parentFrame();//go to the parent frame
-        driver.switchTo().defaultContent();//alternatively we can switch to default page
-        String actualHeaderText = driver.findElement(By.xpath("//h3")).getText();
-        Assert.assertEquals("iframe",actualHeaderText);
+//      Assert if h3 element's text is equal to "iframe"
+//      STILL INSIDE THE FRAME. DRIVER MUST SWITCH BACK TO PARENT FRAME OR DEFAULT CONTENT. BECAUSE THE ELEMENT IS NOT IN THE FRAME
+//      driver.switchTo().parentFrame();//go to the parent frame
+            driver.switchTo().defaultContent();//alternatively we can switch to default page
+            String actualHeaderText = driver.findElement(By.xpath("//h3")).getText();
+            Assert.assertEquals("iframe", actualHeaderText);
+
 
     }
 }
