@@ -1,0 +1,47 @@
+package com.myfirstproject;
+
+import com.myfirstproject.utilities.TestBase;
+import org.junit.Test;
+import org.openqa.selenium.Cookie;
+
+import java.util.Set;
+
+public class Day08_Cookies extends TestBase {
+    @Test
+    public void cookiesTest() throws InterruptedException {
+        driver.get("https://www.amazon.com");
+// 1. Find the total number of cookies
+        Set<Cookie> allCookies = driver.manage().getCookies();
+        int totalNumCookies = allCookies.size();
+        System.out.println("Cookie Size: "+totalNumCookies);
+
+// 2. Print all the cookies
+        for(Cookie eachCookie : allCookies){
+            System.out.println("Cookie --->>> "+eachCookie);
+            System.out.println("Cookie Value --->>> "+eachCookie.getValue());
+            System.out.println("Cookie Name --->>> "+eachCookie.getName());
+            System.out.println("Cookie Expire --->>> "+eachCookie.getExpiry());
+            System.out.println("Cookie Domain --->>> "+eachCookie.getDomain());
+        }
+
+// 3. Get the cookies by their name
+        // entering the cookie name, returning the entire cookie
+        System.out.println("Cookie by Name: "+driver.manage().getCookieNamed("i18n-prefs"));
+
+// 4. Add new cookie
+        Cookie myFavoriteCookie = new Cookie("my cookie", "chocolate-chips");
+        driver.manage().addCookie(myFavoriteCookie);
+        Thread.sleep(3000);
+        int newTotalNumberOfCookies = driver.manage().getCookies().size();
+        System.out.println("New total number of cookies --->>> "+newTotalNumberOfCookies);
+
+// 5. Delete cookie by name
+
+
+// 6. Delete all cookies
+
+
+
+
+    }
+}
