@@ -36,12 +36,14 @@ public class Day08_Cookies extends TestBase {
         System.out.println("New total number of cookies --->>> "+newTotalNumberOfCookies);
 
 // 5. Delete cookie by name
-
+        //passing name of the cookie and deleting that cookie
+        driver.manage().deleteCookieNamed("session-id");
+        Thread.sleep(3000);
+        System.out.println("After deleting 1 cookie:  "+driver.manage().getCookies().size());
 
 // 6. Delete all cookies
-
-
-
-
+        driver.manage().deleteAllCookies();
+        Thread.sleep(3000);
+        System.out.println("Final number of cookies: "+driver.manage().getCookies().size());
     }
 }
