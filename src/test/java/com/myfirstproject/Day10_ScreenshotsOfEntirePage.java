@@ -4,6 +4,7 @@ import com.myfirstproject.utilities.TestBase;
 import org.junit.Assert;
 import org.junit.Test;
 import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
 
 import java.io.IOException;
 
@@ -48,7 +49,8 @@ public class Day10_ScreenshotsOfEntirePage extends TestBase {
         //takeScreenshotOfPageTest();
 
         //TAKING SCREENSHOT OF RESULT ELEMENT
-        takeScreenshotOfThisElement(driver.findElement(By.id("result")));
+        WebElement result = driver.findElement(By.id("result"));
+        takeScreenshotOfThisElement(result);
 
         Assert.assertTrue(driver.findElement(By.id("result")).getText().contains("United Kingdom"));
         takeScreenshotOfEntirePage();
