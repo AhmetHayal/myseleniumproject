@@ -21,14 +21,14 @@ public class Day10_ScreenshotsOfEntirePage extends TestBase {
 
 //        When user type “uni” in the search box
         //TAKE SCREENSHOT
-        takeScreenshotOfEntirePage();
+        takeScreenshotOfTheEntirePage();
 
         driver.findElement(By.id("myCountry")).sendKeys("uni");
         Thread.sleep(2000);
 
 //        And select the ‘United Kingdom’ from the suggestions
         //TAKE SCREENSHOT
-        takeScreenshotOfEntirePage();
+        takeScreenshotOfTheEntirePage();
 
         //TAKING SCREENSHOT OF ONLY UNITED KINGDOM ELEMENT
         takeScreenshotOfThisElement(driver.findElement(By.xpath("//div[@id='myCountryautocomplete-list']//*[.='United Kingdom']")));
@@ -40,7 +40,7 @@ public class Day10_ScreenshotsOfEntirePage extends TestBase {
         //TAKE SCREENSHOT
         //takeScreenshotOfEntirePage();
 
-        takeScreenshotOfEntirePage();
+        takeScreenshotOfTheEntirePage();
         driver.findElement(By.xpath(" //input[@type='button']")).click();
         Thread.sleep(2000);
         //TAKE SCREENSHOT
@@ -53,6 +53,6 @@ public class Day10_ScreenshotsOfEntirePage extends TestBase {
         takeScreenshotOfThisElement(result);
 
         Assert.assertTrue(driver.findElement(By.id("result")).getText().contains("United Kingdom"));
-        takeScreenshotOfEntirePage();
+        takeScreenshotOfTheEntirePage();
     }
 }
