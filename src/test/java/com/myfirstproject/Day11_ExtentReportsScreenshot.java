@@ -8,39 +8,32 @@ import org.openqa.selenium.WebElement;
 
 import java.io.IOException;
 
-
-public class Day10_ExtentReports extends TestBase {
+public class Day11_ExtentReportsScreenshot extends TestBase {
+/*
+create extentReportsScreenshot method
+copy the code from extentReportsTest class and paste here
+So far, we can capture screenshot of the entire page and save under test output folder
+So far, we can capture screenshot of specific elements and save under test output folder
+NOW WE WILL ATTACH SOME SCREENSHOTS ON THE EXTENT REPORTS
+ */
     @Test
-    public void extentReportsTests1(){
-        String text = "selenium";
-        if (text.contains("e")){
-            extentTest.pass("PASS: "+text+" CONTAINS e");
-        }else{
-            extentTest.fail("FAILED: "+text+" DOESN'T CONTAIN THAT LETTER");
-        }
-
-//      pass is used in the lines that we are expecting to pass. This is used a lot.
-        extentTest.pass("PASSED"); //COMMON USE
-//      fail is used in the lines that we are expecting to fail, such as else condition above
-        extentTest.fail("FAILED"); // Since we type this fail code, the REPORT WILL FAIL. ONE FAIL -->> REPORT FAIL
-        extentTest.info("INFO"); //COMMON USE
-        extentTest.skip("SKIP");
-        extentTest.warning("WARNING");
-    }
-
-    @Test
-    public void extentReportsTest() throws IOException, InterruptedException {
+    public void extentReportsScreenshot() throws IOException, InterruptedException {
 //        Given user is on https://testcenter.techproeducation.com/index.php?page=autocomplete
         driver.get("https://testcenter.techproeducation.com/index.php?page=autocomplete");
 //        When user type “uni” in the search box
-        extentTest.pass("Taking the screenshot of the home page"); //Just like System out print ln
-        //TAKE SCREENSHOT
+        extentTest.pass("Taking the screenshot of the home page")
+                .assignDevice("Windows","Chrome")
+                .assignCategory("Smoke", "Regression", "Integration")
+                .assignAuthor("Ahmet","Rf", "Den")
+                .addScreenCaptureFromPath(takeScreenshotOfTheEntirePageAsString());
+        //TAKE SCREENSHOT //Just like System out print ln
         takeScreenshotOfTheEntirePage();
         driver.findElement(By.id("myCountry")).sendKeys("uni");
         Thread.sleep(2000);
 //        And select the ‘United Kingdom’ from the suggestions
         //TAKE SCREENSHOT
-        extentTest.pass("Selecting the United Kingdom option");
+        extentTest.pass("Selecting the United Kingdom option")
+                .addScreenCaptureFromPath(takeScreenshotOfTheEntirePageAsString());
         takeScreenshotOfTheEntirePage();
 
 //        TAKING SCREENSHOT OF ONLY UNITED KINGDOM ELEMENT
@@ -52,7 +45,8 @@ public class Day10_ExtentReports extends TestBase {
 //        And click on submit button
         //TAKE SCREENSHOT
         takeScreenshotOfTheEntirePage();
-        extentTest.pass("Clinking on the Submit Button");
+        extentTest.pass("Clicking on the Submit Button")
+                .addScreenCaptureFromPath(takeScreenshotOfTheEntirePageAsString());
         driver.findElement(By.xpath("//input[@type='button']")).click();
         Thread.sleep(2000);
         //TAKE SCREENSHOT
@@ -60,11 +54,13 @@ public class Day10_ExtentReports extends TestBase {
         takeScreenshotOfTheEntirePage();
 
 //        TAKING THE SCREENSHOT OF THE RESULT ELEMENT
-        extentTest.pass("Taking the screenshot of result element");
+        extentTest.pass("Taking the screenshot of result element")
+                .addScreenCaptureFromPath(takeScreenshotOfTheEntirePageAsString());
         WebElement result = driver.findElement(By.id("result"));
         takeScreenshotOfThisElement(result);
 
-        extentTest.pass("Asserting the result contains United Kingdom");
+        extentTest.pass("Asserting the result contains United Kingdom")
+                .addScreenCaptureFromPath(takeScreenshotOfTheEntirePageAsString());
         Assert.assertTrue(driver.findElement(By.id("result")).getText().contains("United Kingdom"));
     }
 }

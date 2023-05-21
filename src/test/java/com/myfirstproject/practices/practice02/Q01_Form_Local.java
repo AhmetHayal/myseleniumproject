@@ -11,16 +11,23 @@ import java.util.Set;
 
 public class Q01_Form_Local extends TestBase {
     @Test
-    public void test(){
+    public void test() throws InterruptedException {
+//        Given go to file:///C:/Users/Tugba/Desktop/BootCamp/MY-HTML-CSS/index.html
     driver.get("file:///C:/Users/Tugba/Desktop/BootCamp/MY-HTML-CSS/index.html");
+//        Click on "Click Here For Regisration Form"
     driver.findElement(By.partialLinkText("ion Form")).click();
-
+//        Enter username: John
+    Thread.sleep(1000);
     driver.switchTo().alert().sendKeys("John");
     driver.switchTo().alert().accept();
+//        Enter password: John.123
+    Thread.sleep(1000);
     driver.switchTo().alert().sendKeys("John.123");
+    Thread.sleep(1000);
     driver.switchTo().alert().accept();
+    Thread.sleep(1000);
     driver.switchTo().alert().accept();
-
+//        Fill the form and click Confirm
     driver.findElement(By.xpath("//input[@placeholder='Firstname Lastname']")).sendKeys("John");
     driver.findElement(By.xpath("//input[@placeholder='username123']")).sendKeys("John");
     driver.findElement(By.xpath("(//input[@type='password'])[1]")).sendKeys("John.123");

@@ -9,10 +9,7 @@ import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
-import org.openqa.selenium.OutputType;
-import org.openqa.selenium.TakesScreenshot;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
 import java.io.File;
 import java.io.IOException;
@@ -93,6 +90,60 @@ public abstract class TestBase {
         String now = new SimpleDateFormat("yyyyMMddhhmmss").format(new Date());
         String path = System.getProperty("user.dir")+"/test-output/ElementScreenshot/"+now+"image.png";
         FileUtils.copyFile(image,new File(path));
+    }
+/*
+This method captures the image and returns the path of that image.
+RETURN TYPE: static String
+return new File(path).getAbsolutePath();
+ */
+public static String takeScreenshotOfTheEntirePageAsString() throws IOException {
+//        1. TakeScreenShot class with getScreenShotAs method to capture the screenshot
+    File image = ((TakesScreenshot)driver).getScreenshotAs(OutputType.FILE);
+//        2. Create a path to save the image
+//        Create a date for giving dynamic name otherwise the screenshots overrides
+    String now = new SimpleDateFormat("yyyyMMddhhmmss").format(new Date());//getting local date in this format
+//                     CURRENT PROJECT FOLDER         foldername   subfoldername imagename
+    String path = System.getProperty("user.dir")+"/test-output/Screenshots/"+now+"image.png";
+
+//        3. Save the image in the path as a file
+    FileUtils.copyFile(image,new File(path));
+//        GETTING ABSOLUTE PATH OF THE IMAGE PATH THAT IS STRING
+    return new File(path).getAbsolutePath();
+    }
+
+    /*
+    JAVASCRIPT EXECUTOR METHODS
+    @param WebElement
+    scrolls into that element
+     */
+    public static void scrollIntoViewJS(WebElement element){
+        JavascriptExecutor js = (JavascriptExecutor) driver;
+        js.executeScript("arguments[0].scrollIntoView(true);", element);
+    }
+
+    /*
+    scroll all the way down
+     */
+    public static void scrollAllTheWayDownJS(){
+        JavascriptExecutor js = (JavascriptExecutor) driver;
+        js.executeScript("window.scrollTo(0, document.body.scrollHeight)");
+    }
+
+    /*
+    scroll all the way up
+    */
+    public static void scrollAllTheWayUpJS(){
+        JavascriptExecutor js = (JavascriptExecutor) driver;
+        js.executeScript("window.scrollTo(0, -document.body.scrollHeight)");
+    }
+
+    /*
+    @param WebElement
+    clicks on that element
+     */
+    public static void clickByJS(WebElement element){
+        JavascriptExecutor js = (JavascriptExecutor) driver;
+        js.executeScript("arguments[0].click", element);
     }
 
 }
