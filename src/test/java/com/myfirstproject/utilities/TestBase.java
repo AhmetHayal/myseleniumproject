@@ -11,6 +11,12 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.support.ui.ExpectedCondition;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.FluentWait;
+import org.openqa.selenium.support.ui.WebDriverWait;
+
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -24,6 +30,7 @@ public abstract class TestBase {
     protected static ExtentTest extentTest;
     @BeforeClass
     public static void extentReportsSetup(){
+//        WHAT WILL BE REPORT NAME AND WHERE THE REPORT IS CREATED
 //        PATH
         String now = new SimpleDateFormat("yyyyMMddhhmmss").format(new Date());
         String path = System.getProperty("user.dir")+"/test-output/Reports/"+now+"extent_reports.html";
@@ -56,7 +63,7 @@ public abstract class TestBase {
     public void setUp(){
         WebDriverManager.chromedriver().setup();
         driver= new ChromeDriver();
-        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(20));
+//        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
         driver.manage().window().maximize();
     }
     @After
@@ -75,7 +82,6 @@ public abstract class TestBase {
         String now = new SimpleDateFormat("yyyyMMddhhmmss").format(new Date());//getting local date in this format
 //                     CURRENT PROJECT FOLDER         foldername   subfoldername imagename
         String path = System.getProperty("user.dir")+"/test-output/Screenshots/"+now+"image.png";
-
 //        3. Save the image in the path as a file
         FileUtils.copyFile(image,new File(path));
 //        FileUtils.copyFile(FILE,FILE PATH); COPY FILE TO THAT FILE PATH
@@ -91,59 +97,141 @@ public abstract class TestBase {
         String path = System.getProperty("user.dir")+"/test-output/ElementScreenshot/"+now+"image.png";
         FileUtils.copyFile(image,new File(path));
     }
-/*
-This method captures the image and returns the path of that image.
-RETURN TYPE: static String
-return new File(path).getAbsolutePath();
- */
-public static String takeScreenshotOfTheEntirePageAsString() throws IOException {
-//        1. TakeScreenShot class with getScreenShotAs method to capture the screenshot
-    File image = ((TakesScreenshot)driver).getScreenshotAs(OutputType.FILE);
-//        2. Create a path to save the image
-//        Create a date for giving dynamic name otherwise the screenshots overrides
-    String now = new SimpleDateFormat("yyyyMMddhhmmss").format(new Date());//getting local date in this format
-//                     CURRENT PROJECT FOLDER         foldername   subfoldername imagename
-    String path = System.getProperty("user.dir")+"/test-output/Screenshots/"+now+"image.png";
-
-//        3. Save the image in the path as a file
-    FileUtils.copyFile(image,new File(path));
-//        GETTING ABSOLUTE PATH OF THE IMAGE PATH THAT IS STRING
+    /*
+    This method captures the image and returns the path of that image
+    RETURN TYPE : static String
     return new File(path).getAbsolutePath();
+     */
+    public static String takeScreenshotOfTheEntirePageAsString() throws IOException {
+        //        1. TakeScreenShot class with getScreenShotAs method to capture the screenshot
+        File image = ((TakesScreenshot)driver).getScreenshotAs(OutputType.FILE);
+        //        2. Create a path to save the image
+        //        Create a date for giving dynamic name otherwise the screenshots overrides
+        String now = new SimpleDateFormat("yyyyMMddhhmmss").format(new Date());//getting local date in this format
+        //                     CURRENT PROJECT FOLDER         foldername   subfoldername imagename
+        String path = System.getProperty("user.dir")+"/test-output/Screenshots/"+now+"image.png";
+        //        3. Save the image in the path as a file
+        FileUtils.copyFile(image,new File(path));
+
+//        GETTING THE ABSOLUTE PATH OF THE IMAGE PATH THAT IS STRING
+        return new File(path).getAbsolutePath();
     }
 
     /*
-    JAVASCRIPT EXECUTOR METHODS
+   JAVASCRIPT EXECUTOR METHODS
     @param WebElement
     scrolls into that element
      */
     public static void scrollIntoViewJS(WebElement element){
         JavascriptExecutor js = (JavascriptExecutor) driver;
-        js.executeScript("arguments[0].scrollIntoView(true);", element);
+        js.executeScript("arguments[0].scrollIntoView(true);",element);
     }
-
     /*
     scroll all the way down
      */
     public static void scrollAllTheWayDownJS(){
         JavascriptExecutor js = (JavascriptExecutor) driver;
-        js.executeScript("window.scrollTo(0, document.body.scrollHeight)");
+        js.executeScript("window.scrollTo(0,document.body.scrollHeight)");
     }
-
     /*
     scroll all the way up
-    */
+     */
     public static void scrollAllTheWayUpJS(){
         JavascriptExecutor js = (JavascriptExecutor) driver;
-        js.executeScript("window.scrollTo(0, -document.body.scrollHeight)");
+        js.executeScript("window.scrollTo(0,-document.body.scrollHeight)");
     }
-
     /*
     @param WebElement
     clicks on that element
      */
     public static void clickByJS(WebElement element){
         JavascriptExecutor js = (JavascriptExecutor) driver;
-        js.executeScript("arguments[0].click", element);
+        js.executeScript("arguments[0].click();",element);
     }
-
+    /*
+    @param String id of teh webelement that we want to locate
+    locating element using javascript executor
+    and returns that WebElement
+    Note that this is NOT common and we should use 8 locators that we learned in selenium
+     */
+    public WebElement locateElementsByJS(String idOfElement){
+        JavascriptExecutor js = (JavascriptExecutor) driver;
+        return ((WebElement)js.executeScript("return document.getElementById('"+idOfElement+"')"));
+    }
+    /*
+    @param1 WebElement, @param2 String
+    type the string in that web element
+     */
+    public static void setValueByJS(WebElement inputElement,String text){
+        JavascriptExecutor js = (JavascriptExecutor) driver;
+        js.executeScript("arguments[0].setAttribute('value','"+text+"')",inputElement);
+    }
+    /*   HARD WAIT:
+      @param : second
+    */
+    public static void waitFor(int seconds){
+        try {
+            Thread.sleep(seconds*1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+    /*
+    SELENIUM WAIT REUSABLE METHODS
+     */
+    //    DYNAMIC SELENIUM WAITS:
+//===============Explicit Wait==============//
+    public static WebElement waitForVisibility(WebElement element, int timeout) {
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(timeout));
+        return wait.until(ExpectedConditions.visibilityOf(element));
+    }
+    public static WebElement waitForVisibility(By locator, int timeout) {
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(timeout));
+        return wait.until(ExpectedConditions.visibilityOfElementLocated(locator));
+    }
+    public static WebElement waitForClickablility(WebElement element, int timeout) {
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(timeout));
+        return wait.until(ExpectedConditions.elementToBeClickable(element));
+    }
+    public static WebElement waitForClickablility(By locator, int timeout) {
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(timeout));
+        return wait.until(ExpectedConditions.elementToBeClickable(locator));
+    }
+    public static void clickWithTimeOut(WebElement element, int timeout) {
+        for (int i = 0; i < timeout; i++) {
+            try {
+                element.click();
+                return;
+            } catch (WebDriverException e) {
+                waitFor(1);
+            }
+        }
+    }
+    //    This can be used when a new page opens
+    public static void waitForPageToLoad(long timeout) {
+        ExpectedCondition<Boolean> expectation = new ExpectedCondition<Boolean>() {
+            public Boolean apply(WebDriver driver) {
+                return ((JavascriptExecutor) driver).executeScript("return document.readyState").equals("complete");
+            }
+        };
+        try {
+            System.out.println("Waiting for page to load...");
+            WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(timeout));
+            wait.until(expectation);
+        } catch (Throwable error) {
+            System.out.println(
+                    "Timeout waiting for Page Load Request to complete after " + timeout + " seconds");
+        }
+    }
+    //======Fluent Wait====
+    // params : xpath of teh element , max timeout in seconds, polling in second
+    public static WebElement fluentWait(String xpath, int withTimeout, int pollingEvery) {
+        FluentWait<WebDriver> wait = new FluentWait<WebDriver>(driver)
+                .withTimeout(Duration.ofSeconds(withTimeout))//Wait 3 second each time
+                .pollingEvery(Duration.ofSeconds(pollingEvery))//Check for the element every 1 second
+                .withMessage("Ignoring No Such Element Exception")
+                .ignoring(NoSuchElementException.class);
+        WebElement element = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(xpath)));
+        return element;
+    }
 }

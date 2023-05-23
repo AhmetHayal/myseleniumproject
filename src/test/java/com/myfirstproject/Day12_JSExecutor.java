@@ -43,7 +43,7 @@ public class Day12_JSExecutor extends TestBase {
     public void clickByJSTest() throws InterruptedException, IOException {
 //  search porcelain tea set on amazon
         driver.get("https://www.amazon.com/");
-//  locate search box
+//  locate the search box
         WebElement searchBox = driver.findElement(By.id("twotabsearchtextbox"));
 //  type porcelain tea set
         searchBox.sendKeys("porcelain tea set");
@@ -53,5 +53,33 @@ public class Day12_JSExecutor extends TestBase {
         WebElement searchIcon = driver.findElement(By.id("nav-search-submit-button"));
         clickByJS(searchIcon); // JS CLICK
         takeScreenshotOfTheEntirePage();
+    }
+    @Test
+    public void locateElementByJSTest() throws InterruptedException {
+//  search porcelain tea set on amazon
+        driver.get("https://www.amazon.com/");
+//  locate the search box using js executor
+        WebElement searchBox = locateElementsByJS("twotabsearchtextbox");
+        searchBox.sendKeys("porcelain tea set");
+        Thread.sleep(3000);
+//  locate search box icon by JS Executor
+        WebElement searchIcon = locateElementsByJS("nav-search-submit-button");
+        clickByJS(searchIcon);
+    }
+
+    @Test
+    public void typeWithJS(){
+//  search porcelain tea set on amazon
+        driver.get("https://www.amazon.com/");
+
+//  locate the search box using js executor
+        WebElement searchBox = locateElementsByJS("twotabsearchtextbox");
+
+//  type text in the search box js executor >>>>>>>>>>
+        setValueByJS(searchBox, "porcelain tea set");
+
+//  locate search box icon by JS Executor
+        WebElement searchIcon = locateElementsByJS("nav-search-submit-button");
+        clickByJS(searchIcon);
     }
 }
