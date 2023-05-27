@@ -8,7 +8,7 @@ import org.openqa.selenium.WebElement;
 public class Day14_StaleElementReferenceException extends TestBase {
     /*
     StaleElementException:
-    *The reference is no longer FRESH and it can no longer be usable
+    *The reference is no longer FRESH, and it can no longer be usable
     *Reasons may be trying to use the same reference after refreshing the page,
     or going back and forward between the pages
     *SOLUTION: Try not using the old reference
@@ -41,13 +41,21 @@ public class Day14_StaleElementReferenceException extends TestBase {
     @Test
     public void staleElementReferenceExceptionTest3(){
         driver.get("https://www.amazon.com/");
-        WebElement registry = driver.findElement(By.xpath("//*[@id='nav-xshop']//a[11]"));
+        WebElement registry = driver.findElement(By.id("swm-link"));
+        waitFor(2);
         registry.click();
         waitFor(5);
         driver.navigate().back();
         waitFor(5);
-        registry.click();//StaleElementReferenceException:
+//        registry.click();//StaleElementReferenceException:
 //        SOLUTION
-        driver.findElement(By.xpath("//*[@id='nav-xshop']//a[11]")).click();
+        driver.findElement(By.id("swm-link")).click();
+    }
+    @Test
+    public void staleElementReferenceExceptionTest4() throws InterruptedException {
+        driver.get("https://www.amazon.com/");
+//        WebElement registry = driver.findElement(By.linkText("Registry"));
+//        Thread.sleep(2000);
+//        registry.click();
     }
 }
