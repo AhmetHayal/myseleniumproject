@@ -29,24 +29,21 @@ public class Q02_FileUpload extends TestBase {
         driver.get("https://cgi-lib.berkeley.edu/ex/fup.html");
 
 //        Type "My File" into "Notes about the file" input
-        driver.findElement(By.name("note")).sendKeys("My File");
+        driver.findElement(By.xpath("//input[@type='text']")).sendKeys("My File");
 
 //        Click "Choose File" button
-        WebElement chooseFile = driver.findElement(By.name("upfile"));
-
-//        Select the file to upload
-        String pathOfFile =  System.getProperty("user.home")+"\\Desktop\\text.txt";
-        chooseFile.sendKeys(pathOfFile);
+//      Select the file to upload
+        driver.findElement(By.xpath("//input[@type='file']")).sendKeys(System.getProperty("user.home")+"\\Desktop\\text.txt");
 
 //        Click on "Press" button
         driver.findElement(By.xpath("//input[@type='submit']")).click();
 
 //        Assert that "Your notes on the file were" equals to "My File"
-        WebElement assert1 = driver.findElement(By.xpath("//blockquote"));
-        Assert.assertEquals("My File",assert1.getText());
+        String note = driver.findElement(By.xpath("//blockquote")).getText();
+        Assert.assertEquals("My File",note);
 
 //        Assert that file content contains "Hello, I am uploaded file"
-        WebElement assert2 = driver.findElement(By.xpath("//pre"));
-        Assert.assertTrue(assert2.getText().contains("Hello, I am uploaded file"));
+        String fileContent = driver.findElement(By.tagName("pre")).getText();
+        Assert.assertTrue(fileContent.contains("Hello, I am uploaded file"));
     }
 }
