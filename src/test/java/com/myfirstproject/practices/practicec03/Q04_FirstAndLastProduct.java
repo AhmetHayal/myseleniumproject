@@ -7,6 +7,10 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.Select;
 
+import java.util.List;
+
+import static org.junit.Assert.assertEquals;
+
 public class Q04_FirstAndLastProduct extends TestBase {
     /*
     Given
@@ -38,20 +42,29 @@ public class Q04_FirstAndLastProduct extends TestBase {
 
 //        Order products by "Price (low to high)"
         WebElement dropDown = driver.findElement(By.xpath("//select[@data-test='product_sort_container']"));
-        Select select = new Select(dropDown);
-        select.selectByVisibleText("Price (low to high)");
+        //driver.findElement(By.className("product_sort_container"));
+        new Select(dropDown).selectByVisibleText("Price (low to high)");
+        //new Select(dropDown).selectByValue("lohi");
 
 //        Assert that last product costs $49.99, first product costs $7.99
-        int numOfProducts = driver.findElements(By.xpath("//div[@class='inventory_item_price']")).size();
+        List<WebElement> prices = driver.findElements(By.xpath("//div[@class='inventory_item_price']"));
+        String lowestPrice = prices.get(0).getText();
+        System.out.println("lowestPrice = " + lowestPrice);
+        String highestPrice = prices.get(prices.size() - 1).getText();
+        System.out.println("highestPrice = " + highestPrice);
 
-        String priceOfFirstProduct = driver.findElement(By.xpath("(//div[@class='inventory_item_price'])[1]")).getText();
-        System.out.println("priceOfFirstProduct = " + priceOfFirstProduct);
+        assertEquals("$49.99", highestPrice);
+        assertEquals("$7.99", lowestPrice);
 
-        String priceOfLastProduct = driver.findElement(By.xpath("(//div[@class='inventory_item_price'])["+numOfProducts+"]")).getText();
-        System.out.println("priceOfLastProduct = " + priceOfLastProduct);
-
-        Assert.assertTrue(priceOfLastProduct.equals("$49.99"));
-        Assert.assertTrue(priceOfFirstProduct.equals("$7.99"));
-
+//        int numOfProducts = driver.findElements(By.xpath("//div[@class='inventory_item_price']")).size();
+//
+//        String priceOfFirstProduct = driver.findElement(By.xpath("(//div[@class='inventory_item_price'])[1]")).getText();
+//        System.out.println("priceOfFirstProduct = " + priceOfFirstProduct);
+//
+//        String priceOfLastProduct = driver.findElement(By.xpath("(//div[@class='inventory_item_price'])["+numOfProducts+"]")).getText();
+//        System.out.println("priceOfLastProduct = " + priceOfLastProduct);
+//
+//        Assert.assertTrue(priceOfLastProduct.equals("$49.99"));
+//        Assert.assertTrue(priceOfFirstProduct.equals("$7.99"));
     }
 }
